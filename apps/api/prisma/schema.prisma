@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  id          String       @id @default(uuid()) @db.Uuid
+  nip         String       @unique
+  nama        String
+  email       String?
+  telepon     String?
+  createdAt   DateTime     @default(now()) @map("created_at")
+  assignments Assignment[]
+  @@map("person")
+}
+
+model Position {
+  id           String       @id @default(uuid()) @db.Uuid
+  code         String       @unique
+  nama         String
+  level        String
+  displayOrder Int          @default(0) @map("display_order")
+  assignments  Assignment[]
+  @@map("position")
+}
+
+model Assignment {
+  id         String    @id @default(uuid()) @db.Uuid
+  personId   String    @map("person_id") @db.Uuid
+  positionId String    @map("position_id") @db.Uuid
+  validFrom  DateTime  @map("valid_from")
+  validTo    DateTime? @map("valid_to")
+  legalBasis String?   @map("legal_basis")
+  person     Person    @relation(fields: [personId], references: [id])
+  position   Position  @relation(fields: [positionId], references: [id])
+  @@index([positionId, validFrom, validTo])
+  @@map("assignment")
+}
+
+model Delegation {
+  id            String   @id @default(uuid()) @db.Uuid
+  delegateId    String   @map("delegate_person_id") @db.Uuid
+  onBehalfOfId  String   @map("on_behalf_of_person_id") @db.Uuid
+  scopePosition String   @map("scope_position_code")
+  basis         String
+  validFrom     DateTime @map("valid_from")
+  validTo       DateTime @map("valid_to")
+  legalBasis    String   @map("legal_basis")
+  @@index([scopePosition, validFrom, validTo])
+  @@map("delegation")
+}
+
+model SopDefinition {
+  id       String            @id @default(uuid()) @db.Uuid
+  code     String            @unique
+  nama     String
+  versions WorkflowVersion[]
+  @@map("sop_definition")
+}
+
+model WorkflowVersion {
+  id        String          @id @default(uuid()) @db.Uuid
+  sopId     String          @map("sop_id") @db.Uuid
+  version   Int
+  validFrom DateTime        @map("valid_from")
+  validTo   DateTime?       @map("valid_to")
+  sop       SopDefinition   @relation(fields: [sopId], references: [id])
+  states    WorkflowState[]
+  @@unique([sopId, version])
+  @@map("workflow_version")
+}
+
+model WorkflowState {
+  id        String          @id @default(uuid()) @db.Uuid
+  versionId String          @map("workflow_version_id") @db.Uuid
+  code      String
+  label     String
+  external  Boolean         @default(false)
+  version   WorkflowVersion @relation(fields: [versionId], references: [id])
+  @@unique([versionId, code])
+  @@map("workflow_state")
+}
+
+model Submission {
+  id           String    @id @default(uuid()) @db.Uuid
+  subjectType  String    @map("subject_type")
+  sopCode      String    @map("sop_code")
+  versionId    String    @map("workflow_version_id") @db.Uuid
+  currentState String    @map("current_state_code")
+  payload      Json
+  submittedBy  String    @map("submitted_by") @db.Uuid
+  unitId       String    @map("unit_id") @db.Uuid
+  submittedAt  DateTime  @default(now()) @map("submitted_at")
+  closedAt     DateTime? @map("closed_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  @@index([subjectType, currentState])
+  @@index([sopCode, submittedAt])
+  @@map("submission")
+}
+
+model AuditEntry {
+  id             BigInt   @id @default(autoincrement())
+  partitionDate  DateTime @map("partition_date") @db.Date
+  subjectType    String   @map("subject_type")
+  subjectId      String   @map("subject_id") @db.Uuid
+  action         String
+  actorPersonId  String   @map("actor_person_id") @db.Uuid
+  onBehalfOfId   String?  @map("on_behalf_of_person_id") @db.Uuid
+  basis          String
+  fromState      String?  @map("from_state")
+  toState        String?  @map("to_state")
+  policySnapshot Json     @map("policy_snapshot")
+  prevHash       String   @map("prev_hash")
+  ownHash        String   @map("own_hash")
+  createdAt      DateTime @default(now()) @map("created_at")
+  @@index([subjectType, subjectId])
+  @@index([actorPersonId])
+  @@map("audit_entry")
+}
+
+model NumberSequence {
+  id        String   @id @default(uuid()) @db.Uuid
+  scopeKey  String   @unique @map("scope_key")
+  lastValue Int      @default(0) @map("last_value")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("number_sequence")
+}
+
+model RegisterEntry {
+  id          String   @id @default(uuid()) @db.Uuid
+  bookCode    String   @map("book_code")
+  entryNo     String   @map("entry_no")
+  entryDate   DateTime @map("entry_date") @db.Date
+  subjectType String   @map("subject_type")
+  title       String
+  payload     Json
+  createdBy   String   @map("created_by") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  @@unique([bookCode, entryNo])
+  @@index([bookCode, entryDate])
+  @@map("register_entry")
+}
+
+model OutboxEvent {
+  id          String    @id @default(uuid()) @db.Uuid
+  topic       String
+  subjectType String    @map("subject_type")
+  subjectId   String    @map("subject_id") @db.Uuid
+  payload     Json
+  status      String    @default("PENDING")
+  attempts    Int       @default(0)
+  lastError   String?   @map("last_error")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  processedAt DateTime? @map("processed_at")
+  @@index([status, createdAt])
+  @@map("outbox_event")
+}
+
+model IdempotencyKey {
+  key         String   @id
+  payloadHash String   @map("payload_hash")
+  response    Json
+  createdAt   DateTime @default(now()) @map("created_at")
+  expiresAt   DateTime @map("expires_at")
+  @@index([expiresAt])
+  @@map("idempotency_key")
+}
