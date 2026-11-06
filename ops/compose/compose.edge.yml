@@ -1,0 +1,20 @@
+name: tamalate-edge
+services:
+  haproxy:
+    image: haproxy:3.0-alpine
+    restart: unless-stopped
+    ports: ['80:80', '443:443']
+    networks: [edge-net, app-net]
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    networks: [edge-net, app-net]
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    restart: unless-stopped
+    networks: [edge-net]
+networks:
+  edge-net: {}
+  app-net:
+    external: true
+    name: tamalate-app_app-net

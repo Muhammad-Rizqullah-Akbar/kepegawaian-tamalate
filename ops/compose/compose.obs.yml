@@ -1,0 +1,22 @@
+name: tamalate-obs
+services:
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:latest
+    restart: unless-stopped
+    command: ['-retentionPeriod=12', '-storageDataPath=/vmdata']
+    volumes: [vmdata:/vmdata]
+    networks: [obs-net]
+  loki:
+    image: grafana/loki:latest
+    restart: unless-stopped
+    command: ['-config.file=/etc/loki/local-config.yaml']
+    networks: [obs-net]
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    networks: [obs-net]
+volumes:
+  vmdata: {}
+networks:
+  obs-net:
+    internal: true

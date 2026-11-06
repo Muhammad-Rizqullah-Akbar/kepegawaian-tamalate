@@ -1,0 +1,111 @@
+name: tamalate-data
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: kepegawaian
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
+    secrets: [pg_password]
+    command:
+      - postgres
+      - -c
+      - shared_buffers=512MB
+      - -c
+      - work_mem=8MB
+      - -c
+      - max_connections=120
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d kepegawaian"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes: [pgdata:/var/lib/postgresql/data]
+    ports: ['127.0.0.1:5432:5432']
+    networks: [data-net]
+
+  pgbouncer:
+    image: edoburu/pgbouncer:v1.23.1-p2
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_USER: app
+      DB_PASSWORD: dev-password-CHANGE-ME
+      DB_HOST: postgres
+      DB_PORT: '5432'
+      DB_NAME: kepegawaian
+      POOL_MODE: transaction
+      MAX_CLIENT_CONN: '200'
+      DEFAULT_POOL_SIZE: '25'
+      AUTH_TYPE: scram-sha-256
+      ADMIN_USERS: postgres,app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U app -d kepegawaian"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    ports: ['127.0.0.1:6432:5432']
+    networks: [data-net]
+
+  redis:
+    image: redis:8-alpine
+    restart: unless-stopped
+    command: [redis-server, --appendonly, 'yes', --maxmemory, 256mb]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes: [redisdata:/data]
+    ports: ['127.0.0.1:6379:6379']
+    networks: [data-net]
+
+  objectstore:
+    image: rustfs/rustfs:latest
+    restart: unless-stopped
+    environment:
+      RUSTFS_ACCESS_KEY: minioadmin
+      RUSTFS_SECRET_KEY: minioadmin123
+      RUSTFS_CONSOLE_ENABLE: 'true'
+    command: ["/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:9000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes: [objdata:/data]
+    ports: ['127.0.0.1:9000:9000', '127.0.0.1:9001:9001']
+    networks: [data-net]
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.12
+    restart: unless-stopped
+    environment:
+      MEILI_ENV: development
+      MEILI_MASTER_KEY: tamalate-meili-master-key-2026
+      MEILI_NO_ANALYTICS: 'true'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:7700/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes: [meilidata:/meili_data]
+    ports: ['127.0.0.1:7700:7700']
+    networks: [data-net]
+
+volumes:
+  pgdata: {}
+  redisdata: {}
+  objdata: {}
+  meilidata: {}
+
+secrets:
+  pg_password:
+    file: ./secrets/dev/pg_password.txt
+
+networks:
+  data-net:
+    name: tamalate-data-net

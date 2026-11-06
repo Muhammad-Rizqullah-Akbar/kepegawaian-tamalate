@@ -1,0 +1,25 @@
+name: tamalate-app
+services:
+  api:
+    build:
+      context: ../..
+      dockerfile: ops/docker/api.Dockerfile
+    restart: unless-stopped
+    env_file: [../../.env]
+    ports: ['127.0.0.1:4000:4000']
+    networks: [app-net, data-net]
+  web:
+    build:
+      context: ../..
+      dockerfile: ops/docker/web.Dockerfile
+    restart: unless-stopped
+    env_file: [../../.env]
+    depends_on: [api]
+    ports: ['127.0.0.1:3100:3100']
+    networks: [app-net]
+networks:
+  app-net:
+    name: tamalate-app-net
+  data-net:
+    external: true
+    name: tamalate-data-net
