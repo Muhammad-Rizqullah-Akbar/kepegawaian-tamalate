@@ -1,0 +1,29 @@
+{
+  "name": "Sistem Kepegawaian & Persuratan Kecamatan Tamalate",
+  "short_name": "Tamalate Kepegawaian",
+  "description": "Sistem Informasi Kepegawaian, Presensi Geofencing, Dossier Vault, dan Disposisi Surat Kecamatan Tamalate - Pemerintah Kota Makassar",
+  "start_url": "/mobile",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F8FAFD",
+  "theme_color": "#635BFF",
+  "categories": ["government", "productivity", "business"],
+  "shortcuts": [
+    {
+      "name": "Dasbor Mobile & Presensi",
+      "short_name": "Mobile PWA",
+      "url": "/mobile"
+    },
+    {
+      "name": "Dasbor Desktop Surat & Kepegawaian",
+      "short_name": "Dasbor Desktop",
+      "url": "/dashboard"
+    },
+    {
+      "name": "Status 21 Stack & Port Registry",
+      "short_name": "Status & Port",
+      "url": "/status"
+    }
+  ]
+}

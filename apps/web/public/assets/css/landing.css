@@ -1,0 +1,1434 @@
+
+/* ============================================================
+   DESIGN TOKEN, sistem warna Stripe terverifikasi
+   ============================================================ */
+
+:root {
+  /* Aksen */
+  --accent: #635BFF;
+  --accent-focus: #5452FB;
+  --accent-pressed: #4032C8;
+  --accent-deep: #2E2B8C;
+  --accent-soft: #D6D9FC;
+
+  /* Hierarki ink, tujuh tingkat */
+  --ink: #061B31;
+  --heading: #0A2540;
+  --ink-secondary: #1A2C44;
+  --ink-tertiary: #273951;
+  --body: #3C4F69;
+  --body-secondary: #50617A;
+  --muted: #64748D;
+
+  /* Surface dan garis */
+  --surface: #FFFFFF;
+  --surface-soft: #F8FAFD;
+  --hairline: #E5EDF5;
+  --on-primary: #FFFFFF;
+
+  /* Status, nilai GOV.UK teruji WCAG 2.2 AA */
+  --success: #0F7A52;
+  --success-soft: #E6F4EF;
+  --warning: #B45309;
+  --warning-soft: #FDF3E7;
+  --danger: #CA3535;
+  --danger-soft: #FBEAEA;
+
+  /* Skala radius sistem Stripe */
+  --r-xs: 2px;
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-pill: 9999px;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+  --shadow-card: 0 1px 2px rgba(6, 27, 49, 0.06), 0 4px 12px rgba(6, 27, 49, 0.05);
+  --shadow-lift: 0 2px 4px rgba(6, 27, 49, 0.07), 0 12px 28px rgba(6, 27, 49, 0.09);
+
+  /* Glassmorphism: border dalam dan shadow dalam untuk refraksi fisik */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 8px 32px rgba(6, 27, 49, 0.08);
+
+  --container: 1120px;
+  --nav-h: 64px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--body);
+  background: var(--surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============================================================
+   TIPOGRAFI, weight ringan untuk teks besar
+   ============================================================ */
+
+.display {
+  font-size: clamp(36px, 5.2vw, 56px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+}
+
+.heading {
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.014em;
+  color: var(--heading);
+}
+
+.subheading {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+
+.body-lg {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--body);
+}
+
+.body-sm {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--body-secondary);
+}
+
+.label {
+  font-size: 15px;
+  font-weight: 425;
+  line-height: 1.6;
+  color: var(--ink-tertiary);
+}
+
+.caption {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ============================================================
+   IKON, Phosphor, satu family, ukuran standar
+   ============================================================ */
+
+i[class^="ph-"] {
+  font-size: 20px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.icon-box i[class^="ph-"] {
+  font-size: 20px;
+}
+
+/* ============================================================
+   NAVIGASI, glassmorphism dengan border dan shadow dalam
+   ============================================================ */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--glass-bg);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--glass-inner);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-h);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--heading);
+  text-decoration: none;
+}
+
+.brand i[class^="ph-"] {
+  font-size: 24px;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--body-secondary);
+  text-decoration: none;
+  transition: color 150ms ease-out;
+}
+
+.nav-links a:hover {
+  color: var(--heading);
+}
+
+/* Tombol */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 18px;
+  border: none;
+  border-radius: var(--r-pill);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 150ms ease-out, transform 150ms ease-out;
+}
+
+.btn i[class^="ph-"] {
+  font-size: 16px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-primary);
+}
+
+.btn-primary:hover {
+  background: var(--accent-focus);
+}
+
+.btn-primary:active {
+  background: var(--accent-pressed);
+  transform: scale(0.98);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent-soft);
+}
+
+.btn-ghost:hover {
+  background: var(--accent-soft);
+}
+
+.btn-ghost:active {
+  transform: scale(0.98);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* ============================================================
+   HERO, adegan 3D interaktif sebagai latar
+   ============================================================ */
+
+.hero {
+  position: relative;
+  min-height: calc(100dvh - var(--nav-h));
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+/* Kanvas 3D mengisi hero, tidak menerima event pointer */
+#heroCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Lapisan gradien lembut di atas kanvas.
+   Kadar transparansi dinaikkan dibanding versi sebelumnya agar
+   aset 3D tetap terlihat jelas di belakang panel kaca, sementara
+   teks di kolom kiri tetap kontras. */
+.hero-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(44rem 30rem at 66% 46%, rgba(248, 250, 253, 0.34), transparent 66%),
+    linear-gradient(100deg, var(--surface) 30%, rgba(248, 250, 253, 0.28) 50%, transparent 68%);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.hero-copy {
+  max-width: 34rem;
+}
+
+.hero-copy .display {
+  margin: 20px 0 20px;
+}
+
+.hero-copy .body-lg {
+  max-width: 30rem;
+  margin-bottom: 32px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   DECK KACA HERO
+   Empat kartu contoh bertumpuk dengan kedalaman 3D. Kartu dapat
+   digeser satu per satu sehingga seluruh isian contoh dapat dilihat.
+   Deck sengaja melebar keluar container ke kanan supaya terasa
+   seperti elemen yang menonjol, bukan terkurung di dalam grid.
+   ============================================================ */
+
+.hero-deck {
+  position: relative;
+  width: min(30rem, 100%);
+  height: 356px;
+  perspective: 1600px;
+  margin-left: auto;
+  /* Melebar keluar batas container ke kanan */
+  margin-right: calc(-1 * clamp(0px, 7vw, 110px));
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.hero-deck-card {
+  position: absolute;
+  inset: 0;
+  background: var(--glass-bg);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  box-shadow: var(--glass-inner), var(--glass-shadow);
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: grab;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  transition: transform 640ms cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 640ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-deck-card.is-dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.hero-deck-card.is-active {
+  cursor: grab;
+}
+
+/* Kontrol navigasi di bawah deck */
+.hero-deck-nav {
+  position: absolute;
+  left: 24px;
+  bottom: -52px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+
+.hero-deck-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--heading);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background-color 200ms ease-out, transform 200ms ease-out;
+}
+
+.hero-deck-btn:hover {
+  background: var(--surface);
+  transform: translateY(-1px);
+}
+
+.hero-deck-btn:active {
+  transform: scale(0.94);
+}
+
+.hero-deck-btn i[class^="ph-"] {
+  font-size: 16px;
+}
+
+.hero-deck-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.hero-deck-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-pill);
+  background: var(--hairline);
+  transition: background-color 300ms ease-out, transform 300ms ease-out;
+}
+
+.hero-deck-dot.on {
+  background: var(--accent);
+  transform: scale(1.35);
+}
+
+.hero-deck-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+/* Isian dalam kartu kaca, memakai data contoh yang nyata */
+
+.deck-steps {
+  list-style: none;
+  display: grid;
+  gap: 11px;
+}
+
+.deck-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--body);
+}
+
+.deck-steps li i[class^="ph-"] {
+  font-size: 17px;
+  color: var(--success);
+  flex: none;
+}
+
+.deck-foot {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.deck-person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.deck-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.deck-avatar i[class^="ph-"] {
+  font-size: 20px;
+}
+
+.deck-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--heading);
+}
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+}
+
+.status-chip i[class^="ph-"] {
+  font-size: 12px;
+}
+
+.status-chip.ok {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.deck-rows {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+  display: grid;
+  gap: 10px;
+}
+
+.deck-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--body-secondary);
+}
+
+.deck-row .mono { color: var(--ink-tertiary); font-size: 12px; }
+
+.hero-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.hero-panel-head i[class^="ph-"] {
+  font-size: 18px;
+  color: var(--accent);
+}
+
+.hero-panel-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--heading);
+}
+
+.hero-deck .metric-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.hero-deck .metric {
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+}
+
+.hero-deck .metric-value {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--heading);
+  letter-spacing: -0.02em;
+}
+
+.hero-deck .metric-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.hero-deck .metric-delta {
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.hero-deck .metric-delta.up { color: var(--success); }
+.hero-deck .metric-delta.down { color: var(--danger); }
+
+/* Meter threshold, bar tanpa track latar besar */
+.meter-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.meter-track {
+  position: relative;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--hairline);
+  overflow: hidden;
+}
+
+.meter-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  border-radius: var(--r-pill);
+  background: var(--warning);
+  transition: width 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.meter-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ============================================================
+   SEKSI UMUM
+   ============================================================ */
+
+.section {
+  padding: 88px 0;
+}
+
+.section-soft {
+  background: var(--surface-soft);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.section-head {
+  max-width: 40rem;
+  margin-bottom: 48px;
+}
+
+.section-head .heading {
+  margin: 12px 0 14px;
+}
+
+/* ============================================================
+   FITUR COLLAPSE, pola Avalanche
+   Kartu melebar saat dipilih, yang lain menyempit.
+   ============================================================ */
+
+.collapse-section {
+  background: var(--surface);
+  border-top: 1px solid var(--hairline);
+}
+
+.collapse-wrap {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+  margin-top: 40px;
+  max-width: 1080px;
+}
+
+/* Pola Avalanche: kartu aktif mengambil 60 persen lebar, tiga sisanya
+   berbagi 40 persen.
+
+   CATATAN ANTI-FLICKER DAN ANTI-DISTORSI:
+   Sebelumnya lebar kolom diubah lewat animasi transform scaleX. Cara itu
+   memang berjalan di compositor, tetapi menghimpit seluruh isi kartu
+   secara horizontal, sehingga kotak ikon dan teks terlihat gepeng.
+   Sekarang lebar dikendalikan flex-grow, yang diinterpolasi dengan halus
+   oleh browser tanpa mengubah bentuk huruf maupun kotak ikon. Nilai 4.5
+   dipilih agar kartu aktif tepat menempati 60 persen: 4.5 dibagi
+   (4.5 + 1 + 1 + 1) sama dengan 0.6. */
+.collapse-card {
+  flex: 1 1 0;
+  min-width: 0;
+  position: relative;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  background: var(--glass-bg);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  box-shadow: var(--glass-inner), var(--shadow-card);
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  padding: 0;
+  height: 268px;
+  display: flex;
+  flex-direction: column;
+  transition: flex-grow 640ms cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 400ms ease-out,
+              border-color 400ms ease-out,
+              box-shadow 400ms ease-out;
+}
+
+.collapse-card.active {
+  flex-grow: 4.5;
+  background: var(--surface);
+  border-color: var(--accent-soft);
+
+  /* Tata letak dua kolom. Kolom kiri memuat kotak ikon, kolom kanan
+     memuat seluruh teks. Padding 24 px sama rata di keempat sisi,
+     sehingga tidak ada elemen yang menempel ke tepi kartu. */
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  grid-template-rows: auto 1fr;
+  column-gap: 18px;
+  row-gap: 10px;
+  align-content: start;
+  align-items: start;
+  padding: 24px;
+}
+
+/* ------------------------------------------------------------
+   KARTU TIDAK AKTIF
+   Ikon dan nama fitur dikelompokkan di tengah kartu secara vertikal.
+   ------------------------------------------------------------ */
+
+.collapse-card:not(.active) .collapse-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 22px 16px;
+  height: 100%;
+  text-align: center;
+}
+
+.collapse-card:not(.active) .collapse-title {
+  font-size: 14px;
+  text-align: center;
+  overflow-wrap: break-word;
+  line-height: 1.4;
+}
+
+.collapse-card:not(.active) .collapse-kicker {
+  display: none;
+}
+
+.collapse-card:not(.active) .collapse-body {
+  display: none;
+}
+
+/* ------------------------------------------------------------
+   KARTU AKTIF, tata letak dua kolom
+   Header dijadikan display contents agar kotak ikon dan blok judul
+   menjadi dua item grid terpisah. Dengan begini ikon menempati kolom
+   kiri, sementara judul dan seluruh isi menempati kolom kanan.
+   ------------------------------------------------------------ */
+
+.collapse-card.active .collapse-head {
+  display: contents;
+}
+
+.collapse-card.active .collapse-head > div:last-child {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.collapse-card.active .collapse-body {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  padding: 0;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.collapse-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  display: grid;
+  place-items: center;
+  flex: none;
+  transition: background-color 400ms ease-out, color 400ms ease-out;
+}
+
+.collapse-card.active .collapse-icon {
+  grid-column: 1;
+  grid-row: 1;
+  background: var(--accent);
+  color: var(--on-primary);
+}
+
+.collapse-icon i[class^="ph-"] {
+  font-size: 22px;
+}
+
+.collapse-card.active .collapse-icon i[class^="ph-"] {
+  font-size: 28px;
+}
+
+.collapse-title {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--heading);
+}
+
+.collapse-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+/* Isi kartu. Kartu tidak aktif menyembunyikan isi lewat opacity dan
+   visibility, BUKAN display none, karena display none memaksa browser
+   melakukan reflow penuh setiap kali kartu diganti. */
+.collapse-body {
+  padding: 0;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 320ms ease-out, visibility 320ms;
+}
+
+.collapse-card.active .collapse-title {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.collapse-card.active .collapse-kicker {
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.collapse-text {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--body-secondary);
+  max-width: 52ch;
+}
+
+.collapse-list {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.collapse-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--body);
+}
+
+.collapse-list li i[class^="ph-"] {
+  font-size: 15px;
+  color: var(--accent);
+  margin-top: 2px;
+  flex: none;
+}
+
+.collapse-cta {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.collapse-cta i[class^="ph-"] {
+  font-size: 14px;
+  transition: transform 200ms ease-out;
+}
+
+.collapse-card.active .collapse-cta i[class^="ph-"] {
+  transform: translateX(3px);
+}
+
+/* ============================================================
+   SECTION ALUR, pinned stack dua arah
+   Posisi scroll menetap. Kartu naik satu per satu menutupi kartu
+   sebelumnya, lalu saat scroll berbalik kartu teratas bergeser ke
+   bawah untuk menampakkan lapisan yang sebelumnya tertumpuk.
+   ============================================================ */
+
+.stack-section {
+  background: var(--surface-soft);
+  border-top: 1px solid var(--hairline);
+}
+
+.stack-intro {
+  padding: 96px 0 56px;
+}
+
+.stack-viewport {
+  position: relative;
+}
+
+/* Container sticky. Tingginya ditentukan JS berdasarkan jumlah
+   kartu supaya setiap kartu punya ruang scroll yang cukup. */
+.stack-sticky {
+  position: sticky;
+  top: var(--nav-h);
+  height: calc(100dvh - var(--nav-h));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* Kanvas 3D section alur. Berada di belakang kartu kaca, memberi
+   kedalaman tanpa mengganggu keterbacaan isi kartu. */
+#stackCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.stack-stage {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, 94vw);
+  height: min(560px, 62dvh);
+}
+
+/* Setiap kartu menumpuk penuh di posisi yang sama. */
+.stack-stage .sheet {
+  position: absolute;
+  inset: 0;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  box-shadow: var(--glass-inner), var(--shadow-card);
+  padding: 40px 44px;
+  display: flex;
+  flex-direction: column;
+  transform-origin: center top;
+
+  /* Hanya transform dan opacity. Tidak ada properti layout. */
+  will-change: transform, opacity;
+  transition: box-shadow 300ms ease-out, border-color 300ms ease-out;
+}
+
+.stack-stage .sheet:hover {
+  border-color: var(--accent-soft);
+}
+
+.sheet-index {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.sheet-title {
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.018em;
+  color: var(--heading);
+  margin-bottom: 16px;
+}
+
+.sheet-text {
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--body);
+  max-width: 62ch;
+}
+
+.sheet-foot {
+  margin-top: auto;
+  padding-top: 26px;
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.sheet-step {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Penanda posisi di bawah panggung */
+.stack-progress {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 10;
+}
+
+.stack-pip {
+  width: 22px;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: var(--hairline);
+  transition: background-color 250ms ease-out, transform 250ms ease-out;
+}
+
+.stack-pip.active {
+  background: var(--accent);
+  transform: scaleY(2);
+}
+
+/* ============================================================
+   KARTU KEMAMPUAN
+   ============================================================ */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  padding: 26px;
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.card h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--heading);
+  margin: 16px 0 8px;
+}
+
+.card p {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--body-secondary);
+}
+
+/* ============================================================
+   PENAMPIL PALET
+   ============================================================ */
+
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 14px;
+}
+
+.swatch {
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.swatch-chip {
+  height: 62px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.swatch-meta {
+  padding: 10px 12px;
+}
+
+.swatch-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--heading);
+}
+
+.swatch-hex {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ============================================================
+   TATA LETAK TIGA VIEWPORT
+   ============================================================ */
+
+.viewport-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.vp {
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.vp-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--hairline);
+  background: var(--surface-soft);
+}
+
+.vp-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--heading);
+}
+
+.vp-range {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.vp-body {
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.vp-note {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--body-secondary);
+}
+
+.vp-tag {
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: var(--r-xs);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  justify-self: start;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.footer {
+  padding: 56px 0 40px;
+  border-top: 1px solid var(--hairline);
+  background: var(--surface);
+}
+
+.footer-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.footer-note {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 34rem;
+}
+
+.footer-bottom {
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   SCROLL REVEAL, CSS scroll-driven animation
+   Bukan window scroll listener. Fallback lewat IntersectionObserver.
+   ============================================================ */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fallback: kelas ini ditambahkan JS saat elemen masuk viewport */
+.reveal-fallback {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-fallback.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   RESPONSIF
+   ============================================================ */
+
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 44px; }
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+  .viewport-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+
+  /* Di tablet, deck tetap satu baris tetapi tingginya dikurangi
+     dan kartu aktif tidak lagi mengambil penuh 60 persen. */
+  .collapse-wrap { max-width: 100%; }
+  .collapse-card { height: 248px; }
+  .collapse-card.active { flex-grow: 3; }
+
+  .hero-deck { margin-right: 0; width: 100%; height: 340px; }
+
+}
+
+@media (max-width: 640px) {
+  .hero { min-height: auto; padding: 64px 0 56px; }
+  .hero-veil {
+    background:
+      radial-gradient(32rem 22rem at 70% 30%, rgba(248, 250, 253, 0.5), transparent 65%),
+      linear-gradient(170deg, var(--surface) 38%, rgba(248, 250, 253, 0.42) 70%, transparent 90%);
+  }
+  .section { padding: 64px 0; }
+  .stack-intro { padding: 64px 0 40px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .collapse-wrap { flex-direction: column; gap: 10px; }
+  .collapse-wrap .collapse-card { flex: none; }
+  .collapse-card { height: auto; min-height: 0; }
+  /* Di ponsel, kartu tidak aktif ditata vertikal: ikon di atas,
+     nama fitur di bawahnya, keduanya di tengah. */
+  .collapse-card:not(.active) .collapse-head {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px 16px;
+    text-align: center;
+  }
+  .collapse-card:not(.active) .collapse-title {
+    font-size: 15px;
+    text-align: center;
+    min-width: 0;
+  }
+
+  /* Kartu aktif juga vertikal: ikon di baris pertama, judul di baris
+     kedua, seluruh isi di baris ketiga. Tinggi kartu mengikuti isi. */
+  .collapse-card.active {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    row-gap: 14px;
+    padding: 20px 18px;
+    height: auto;
+  }
+  .collapse-card.active .collapse-icon {
+    width: 48px;
+    height: 48px;
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .collapse-card.active .collapse-icon i[class^="ph-"] { font-size: 24px; }
+  .collapse-card.active .collapse-head > div:last-child {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .collapse-card.active .collapse-title { font-size: 18px; }
+  .collapse-card.active .collapse-body {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .collapse-text { font-size: 13px; max-width: 100%; }
+
+  .metric-row { grid-template-columns: 1fr; }
+  .stack-stage { width: 94vw; height: min(440px, 64dvh); }
+  .sheet { padding: 28px 24px; }
+  .sheet-index { font-size: 12px; margin-bottom: 14px; }
+  .sheet-title { font-size: 26px; margin-bottom: 12px; }
+  .sheet-text { font-size: 16px; max-width: 100%; }
+  .sheet-foot { padding-top: 20px; }
+  .sheet-step { font-size: 13px; }
+  .footer-grid { flex-direction: column; }
+
+  /* Panel kaca bertumpuk dikurangi offsetnya agar tidak keluar layar */
+  .hero-deck { height: 372px; margin-right: 0; width: 100%; }
+  .hero-deck-nav { left: 0; bottom: -50px; }
+  .hero-deck-card { padding: 20px; }
+  .deck-steps li { font-size: 13px; }
+}
+
+
+/* ============================================================
+   AKSESIBILITAS
+   ============================================================ */
+
+/* Fallback solid untuk glassmorphism saat transparansi dikurangi */
+@media (prefers-reduced-transparency: reduce) {
+  .nav,
+  .hero-deck-card,
+  .hero-deck-btn,
+  .sheet {
+    background: var(--surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: var(--shadow-card);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  /* Kartu alur tampil penuh tanpa animasi masuk */
+  .sheet {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Kartu fitur selalu terbuka, tanpa animasi */
+  .collapse-body {
+    opacity: 1;
+    visibility: visible;
+    display: grid;
+  }
+
+  .collapse-card { height: auto; min-height: 0; }
+  .collapse-wrap,
+  .collapse-card { transition: none; }
+
+  .meter-fill { transition: none; }
+
+  .reveal,
+  .reveal-fallback {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .card:hover { transform: none; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

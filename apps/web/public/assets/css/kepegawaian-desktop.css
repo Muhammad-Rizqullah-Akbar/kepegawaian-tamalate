@@ -1,0 +1,113 @@
+/* ============================================================
+   LAPISAN DESKTOP UNTUK MODUL KEPEGAWAIAN
+   Gaya komponen modul sudah ada di kepegawaian.css dan berkas.css. Berkas
+   ini hanya menambahkan potongan kecil yang belum dimiliki halaman
+   desktop, yaitu baris aksi, catatan, dan penempatan wadah layar
+   kepegawaian di dalam kerangka AppShell.
+   ============================================================ */
+
+/* ---------- Penempatan wadah layar kepegawaian ---------- */
+.kpg-host {
+  display: block;
+  padding-bottom: 48px;
+}
+
+.kpg-host[hidden] {
+  display: none;
+}
+
+/* Judul halaman bawaan modul sudah punya gayanya sendiri, jadi tidak perlu
+   ditimpa. Yang perlu hanya jarak atas agar tidak menempel ke topbar. */
+.kpg-host .modul-page-head {
+  margin-top: 4px;
+}
+
+/* ---------- Baris aksi ---------- */
+.sr-aksi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.sr-aksi .btn {
+  flex: 1 1 auto;
+}
+
+/* ---------- Catatan ---------- */
+.note-card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+  margin-top: 16px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--body-secondary);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+}
+
+.note-card i[class^="ph-"] {
+  font-size: 17px;
+  color: var(--accent);
+}
+
+/* ---------- Kisi ubin pada usulan ---------- */
+.kisi-metrik {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.usul-tahap {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 11px 13px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+}
+
+.usul-tahap b {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--heading);
+  overflow-wrap: anywhere;
+}
+
+.usul-tahap span {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Kelonggaran pada layar lebar ---------- */
+@media (min-width: 1100px) {
+  .kpg-host .kisi-metrik {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .kpg-host .pegawai-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+/* ---------- Wadah pratinjau naskah ---------- */
+.kpg-host .pure-doc-print {
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  padding: 28px 32px;
+  max-width: 860px;
+}
+
+@media print {
+  .kpg-host .pure-doc-print {
+    border: none;
+    padding: 0;
+  }
+}

@@ -1,0 +1,578 @@
+/* ============================================================
+   GAYA TAMPILAN BERKAS
+   Daftar periksa kelengkapan, formulir permohonan cuti, tabel pegawai
+   beserta tenggat, dan notifikasi penyiapan berkas. Seluruh baris memakai
+   kisi dengan kolom mengecil boleh menyusut, tanpa pemotongan teks dan
+   tanpa larangan membungkus, supaya tidak ada isi yang terpotong pada
+   layar ponsel.
+   ============================================================ */
+
+/* ---------- Panel umum ---------- */
+.bk-panel {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+}
+.bk-kosong {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 30px 18px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed var(--hairline);
+  border-radius: 16px;
+}
+.bk-kosong i { font-size: 28px; color: var(--muted); }
+.bk-kosong span { max-width: 34ch; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+.bk-deret { display: grid; gap: 9px; }
+
+/* ---------- Ringkasan angka ---------- */
+.bk-ringkas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.bk-ringkas-butir {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 10px 12px;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: 13px;
+}
+.bk-ringkas-butir b { font-size: 17px; font-weight: 550; color: var(--heading); }
+.bk-ringkas-butir span { font-size: 11px; line-height: 1.35; color: var(--muted); overflow-wrap: anywhere; }
+
+/* ---------- Putusan kelengkapan ---------- */
+.bk-putusan {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 12px 13px;
+  border-radius: 13px;
+}
+.bk-putusan i { font-size: 19px; }
+.bk-putusan b { display: block; font-size: 13px; font-weight: 600; }
+.bk-putusan span { display: block; margin-top: 2px; font-size: 12px; line-height: 1.45; }
+.bk-putusan-hijau { background: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46; }
+.bk-putusan-hijau i { color: var(--success); }
+.bk-putusan-merah { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
+.bk-putusan-merah i { color: var(--danger); }
+
+/* ---------- Lencana ---------- */
+.bk-lencana {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 10.5px;
+  font-weight: 550;
+  line-height: 1.5;
+  border-radius: 999px;
+  white-space: normal;
+}
+.bk-hijau { background: #DCFCE7; color: #14532D; }
+.bk-merah { background: #FEE2E2; color: #7F1D1D; }
+.bk-merah-muda { background: #FEF2F2; color: #991B1B; }
+.bk-kuning { background: #FEF3C7; color: #78350F; }
+.bk-biru { background: #DBEAFE; color: #1E3A8A; }
+.bk-abu { background: #F1F5F9; color: #475569; }
+
+/* ---------- Butir daftar periksa ---------- */
+.bk-butir {
+  display: grid;
+  gap: 7px;
+  padding: 11px 12px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--hairline);
+  border-radius: 12px;
+}
+.bk-butir.is-kurang { border-left-color: var(--danger); background: #FFFBFB; }
+.bk-butir-atas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: start;
+}
+.bk-butir-nama { font-size: 12.5px; line-height: 1.5; color: var(--ink); overflow-wrap: anywhere; }
+.bk-butir-bawah { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.bk-butir-khusus { font-size: 11px; color: var(--muted); }
+.bk-butir-uraian {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--body-secondary);
+  overflow-wrap: anywhere;
+}
+.bk-tombol-baris { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
+.bk-tombol-keadaan {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 11.5px;
+  color: var(--body-secondary);
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: 9px;
+  cursor: pointer;
+}
+.bk-tombol-keadaan.is-aktif {
+  color: var(--surface);
+  background: var(--accent);
+  border-color: var(--accent);
+  font-weight: 550;
+}
+
+/* ---------- Rujukan kode arsip ---------- */
+.bk-rujukan {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 9px;
+  align-items: start;
+  padding: 10px 11px;
+  background: var(--surface-soft);
+  border: 1px dashed var(--hairline);
+  border-radius: 11px;
+}
+.bk-kode {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-deep);
+  overflow-wrap: anywhere;
+}
+.bk-uraian { font-size: 11.5px; line-height: 1.45; color: var(--body-secondary); overflow-wrap: anywhere; }
+.bk-sumber { grid-column: 1 / -1; font-size: 10.5px; color: var(--muted); overflow-wrap: anywhere; }
+.bk-tegak { color: var(--warning); }
+
+.bk-catatan {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  padding: 10px 11px;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 11px;
+}
+.bk-catatan i { font-size: 15px; color: var(--warning); }
+.bk-catatan span { font-size: 11.5px; line-height: 1.5; color: #78350F; overflow-wrap: anywhere; }
+
+.bk-kaki {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: center;
+  padding-top: 9px;
+  border-top: 1px solid var(--hairline);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ---------- Tabel pegawai ---------- */
+.bk-deret-pegawai { display: grid; gap: 10px; }
+.bk-baris-pegawai {
+  display: grid;
+  gap: 8px;
+  padding: 13px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+}
+.bk-baris-pegawai.is-aktif { border-color: var(--accent); background: var(--accent-soft); }
+.bk-pegawai-kepala { display: grid; gap: 2px; }
+.bk-pegawai-kepala b { font-size: 13.5px; font-weight: 550; color: var(--heading); overflow-wrap: anywhere; }
+.bk-pegawai-kepala span { font-size: 11px; color: var(--muted); }
+.bk-pegawai-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  font-size: 11.5px;
+  color: var(--body-secondary);
+}
+.bk-gol {
+  padding: 2px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--heading);
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+}
+.bk-pisah { color: var(--muted); }
+.bk-pegawai-gaji { font-size: 11.5px; color: var(--body-secondary); }
+.bk-pegawai-gaji b { color: var(--heading); }
+
+.bk-tenggat-tiga {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+.bk-tenggat-butir { display: grid; gap: 5px; min-width: 0; }
+.bk-tenggat-judul {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.bk-sel {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 8px 9px;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: 11px;
+}
+.bk-sel-atas { display: grid; gap: 4px; justify-items: start; }
+.bk-sel-atas b { font-size: 11.5px; font-weight: 600; color: var(--heading); }
+.bk-sel-bawah { font-size: 10px; color: var(--muted); }
+
+/* ---------- Notifikasi ---------- */
+.bk-deret-notif { display: grid; gap: 9px; }
+.bk-notif {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 12px;
+  border-radius: 13px;
+}
+.bk-notif > i { font-size: 18px; margin-top: 2px; }
+.bk-notif.is-kuning { background: #FFFBEB; border: 1px solid #FDE68A; }
+.bk-notif.is-kuning > i { color: var(--warning); }
+.bk-notif.is-merah { background: #FEF2F2; border: 1px solid #FECACA; }
+.bk-notif.is-merah > i { color: var(--danger); }
+.bk-notif-isi { display: grid; gap: 4px; min-width: 0; }
+.bk-notif-atas { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+.bk-notif-atas b { font-size: 12.5px; font-weight: 600; }
+.bk-notif-nama { font-size: 12.5px; font-weight: 550; color: var(--heading); overflow-wrap: anywhere; }
+.bk-notif-meta { font-size: 11px; color: var(--muted); overflow-wrap: anywhere; }
+.bk-notif-pesan { font-size: 11.5px; line-height: 1.5; color: var(--body-secondary); overflow-wrap: anywhere; }
+.bk-notif-kaki {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 2px;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.bk-notif-aksi {
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 550;
+  color: var(--surface);
+  background: var(--accent);
+  border: 0;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+/* ---------- Panel rujukan ---------- */
+.bk-panel-rujukan { gap: 9px; }
+.bk-blok-judul-rujukan {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--heading);
+}
+.bk-rujukan-baris {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+  padding: 9px 11px;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: 11px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--body-secondary);
+  overflow-wrap: anywhere;
+}
+.bk-rujukan-nama { font-size: 10px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; color: var(--muted); }
+
+/* ============================================================
+   FORMULIR PERMOHONAN CUTI
+   Susunan ruas, urutan blok, dan proporsi kolom mengikuti berkas
+   SURAT CUTI 2026. Seluruh ruas digambar sebagai tabel sungguhan dengan
+   lebar kolom terkunci, sehingga tidak ada isi yang meluap pada layar
+   ponsel maupun pada hasil cetak.
+   ============================================================ */
+.ct-formulir {
+  display: grid;
+  gap: 10px;
+  padding: 14px 12px;
+  background: #FFFFFF;
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  color: #0F172A;
+  min-width: 0;
+}
+.ct-formulir > * { min-width: 0; }
+
+.ct-kop { display: grid; gap: 1px; font-size: 11.5px; line-height: 1.5; }
+.ct-kop-tanggal { margin-bottom: 6px; }
+.ct-kop-yth { font-weight: 600; }
+.ct-kop-cq { padding-left: 14px; }
+.ct-kop-di { padding-left: 14px; }
+
+/* ---------- Kerangka tabel ---------- */
+.ct-tabel {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid #64748D;
+  /* Satuan em dipakai supaya ukuran huruf menyesuaikan wadah, baik pada
+     layar ponsel maupun pada dokumen cetak milik modul kepegawaian. */
+  font-size: 0.82em;
+  line-height: 1.45;
+}
+.ct-tabel th,
+.ct-tabel td {
+  border: 1px solid #94A3B8;
+  padding: 4px 5px;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.ct-judul {
+  padding: 4px 6px;
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #061B31;
+  background: #EFF3F8;
+  text-align: center;
+}
+
+.ct-lbl { color: #475569; background: #F8FAFD; }
+.ct-nilai { font-weight: 500; }
+.ct-kosong { background: #FFFFFF; }
+
+/* ---------- Tabel pilihan ---------- */
+.ct-sel-opt { font-weight: 500; }
+.ct-sel-kotak { width: 100%; text-align: center; vertical-align: middle; }
+.ct-sel-putusan {
+  font-size: 0.74em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1.9;
+}
+
+/* ---------- Kotak centang ---------- */
+.ct-kotak {
+  display: inline-grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  font-size: 11px;
+  line-height: 1;
+  border: 1.5px solid #64748D;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+.ct-sel-putusan .ct-kotak { margin-bottom: 2px; }
+.ct-kotak i { font-size: 10px; color: var(--accent); }
+.ct-layar { border-color: var(--accent); }
+.ct-cetak { display: none; border: 0; font-size: 15px; }
+
+/* ---------- Catatan cuti ---------- */
+.ct-catatan-item {
+  font-size: 0.74em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+.ct-catatan-kepala {
+  font-size: 0.74em;
+  font-weight: 700;
+  text-align: center;
+  color: #475569;
+  background: #F1F5F9;
+}
+.ct-catatan-sisa { text-align: center; vertical-align: middle; font-weight: 600; }
+.ct-catatan-pinggir { background: #FFFFFF; }
+
+/* ---------- Ruang tanda tangan ---------- */
+.ct-ruang td { height: 34px; }
+.ct-tanda-sel {
+  font-size: 0.82em;
+  line-height: 1.5;
+  vertical-align: top;
+}
+.ct-tanda-ruang { height: 40px; }
+.ct-tanda-jabatan { font-weight: 600; }
+.ct-tanda-nama {
+  font-weight: 600;
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+.ct-tanda-nip { font-size: 0.74em; color: #475569; }
+.ct-tanda-pangkat { font-size: 0.74em; color: #475569; }
+
+/* ---------- Catatan putusan ---------- */
+.ct-catatan-putusan {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 7px;
+  align-items: start;
+  padding: 7px 8px;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 8px;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: #78350F;
+}
+.ct-catatan-putusan i { font-size: 13px; color: var(--warning); }
+
+.ct-nomor-naskah {
+  padding-top: 8px;
+  border-top: 1px solid var(--hairline);
+  font-size: 0.78em;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Aturan cetak formulir (1 HVS A4 Presisi) ----------
+   Pada layar kotak centang digambar sebagai kotak bergaris, sedangkan
+   pada hasil cetak dipakai tanda kotak teks supaya tetap terbaca. */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 6mm 8mm;
+  }
+  .ct-formulir {
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    gap: 3px !important;
+    max-height: 284mm !important;
+    page-break-inside: avoid !important;
+    page-break-after: avoid !important;
+    font-size: 8pt !important;
+    line-height: 1.15 !important;
+  }
+  .ct-kop {
+    font-size: 8pt !important;
+    line-height: 1.2 !important;
+    gap: 0 !important;
+  }
+  .ct-kop-tanggal {
+    margin-bottom: 2px !important;
+  }
+  .ct-tabel {
+    border-color: #000000 !important;
+    font-size: 7.5pt !important;
+    line-height: 1.12 !important;
+    page-break-inside: avoid !important;
+  }
+  .ct-tabel th,
+  .ct-tabel td {
+    border-color: #000000 !important;
+    padding: 1.5px 3.5px !important;
+  }
+  .ct-judul {
+    background: #EFF3F8 !important;
+    padding: 1.5px 3px !important;
+    font-size: 7.5pt !important;
+  }
+  .ct-ruang td {
+    height: 12px !important;
+  }
+  .ct-tanda-ruang {
+    height: 16px !important;
+  }
+  .ct-nomor-naskah {
+    padding-top: 2px !important;
+    font-size: 6.8pt !important;
+  }
+  .ct-layar { display: none !important; }
+  .ct-cetak { display: inline-block !important; }
+}
+
+/* ---------- Penyaring pegawai ---------- */
+.bk-saring { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 11px; }
+.bk-saring-butir {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 11.5px;
+  color: var(--body-secondary);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.bk-saring-butir.is-aktif {
+  color: var(--surface);
+  background: var(--accent);
+  border-color: var(--accent);
+  font-weight: 550;
+}
+
+/* ---------- Daftar permohonan cuti ---------- */
+.bk-deret-cuti { display: grid; gap: 9px; }
+.bk-baris-cuti {
+  display: grid;
+  gap: 7px;
+  padding: 12px 13px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 13px;
+}
+.bk-cuti-atas { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.bk-cuti-atas b { font-size: 13px; font-weight: 550; color: var(--heading); overflow-wrap: anywhere; }
+.bk-cuti-meta { font-size: 11.5px; line-height: 1.5; color: var(--body-secondary); overflow-wrap: anywhere; }
+.bk-cuti-kaki {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+/* ---------- Tombol putusan ---------- */
+.bk-putusan-aksi { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+
+/* ---------- Riwayat ---------- */
+.bk-riwayat-baris {
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--accent);
+  border-radius: 11px;
+}
+.bk-riwayat-atas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.bk-riwayat-atas b { font-size: 12.5px; font-weight: 550; color: var(--heading); }
+.bk-riwayat-atas span { font-size: 10.5px; color: var(--muted); }
+.bk-riwayat-oleh { font-size: 11.5px; color: var(--body-secondary); overflow-wrap: anywhere; }
+.bk-riwayat-catatan { font-size: 11.5px; line-height: 1.5; color: var(--body); overflow-wrap: anywhere; }

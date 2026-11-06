@@ -1,0 +1,89 @@
+/* ============================================================
+   TOKEN DESAIN DAN UTILITAS BERSAMA
+   Satu sumber warna, radius, tipografi, dan utilitas.
+   Dipakai bersama halaman publik, dasbor desktop, dan mobile.
+   ============================================================ */
+
+:root {
+  /* Aksen */
+  --accent: #635BFF;
+  --accent-focus: #5452FB;
+  --accent-pressed: #4032C8;
+  --accent-deep: #2E2B8C;
+  --accent-soft: #D6D9FC;
+
+  /* Hierarki ink, tujuh tingkat */
+  --ink: #061B31;
+  --heading: #0A2540;
+  --ink-secondary: #1A2C44;
+  --ink-tertiary: #273951;
+  --body: #3C4F69;
+  --body-secondary: #50617A;
+  --muted: #64748D;
+
+  /* Surface dan garis */
+  --surface: #FFFFFF;
+  --surface-soft: #F8FAFD;
+  --hairline: #E5EDF5;
+  --on-primary: #FFFFFF;
+
+  /* Status, nilai GOV.UK teruji WCAG 2.2 AA */
+  --success: #0F7A52;
+  --success-soft: #E6F4EF;
+  --warning: #B45309;
+  --warning-soft: #FDF3E7;
+  --danger: #CA3535;
+  --danger-soft: #FBEAEA;
+
+  /* Skala radius sistem Stripe */
+  --r-xs: 2px;
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-pill: 9999px;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+  --shadow-card: 0 1px 2px rgba(6, 27, 49, 0.06), 0 4px 12px rgba(6, 27, 49, 0.05);
+  --shadow-lift: 0 2px 4px rgba(6, 27, 49, 0.07), 0 12px 28px rgba(6, 27, 49, 0.09);
+
+  /* Glassmorphism: border dalam dan shadow dalam untuk refraksi fisik */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 8px 32px rgba(6, 27, 49, 0.08);
+
+  --container: 1120px;
+  --nav-h: 64px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--body);
+  background: var(--surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}

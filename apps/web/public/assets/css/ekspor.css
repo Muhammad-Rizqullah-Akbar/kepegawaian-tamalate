@@ -1,0 +1,843 @@
+/* ============================================================
+   EKSPOR DAN CETAK LEMBAR RESMI
+   Pratinjau buku agenda dan lembar disposisi pada layar ponsel,
+   lalu cetak atau simpan sebagai PDF dari peramban, sama seperti
+   di tampilan desktop. Gaya lembar diambil dari aturan resmi yang
+   sudah dipakai halaman desktop supaya hasilnya identik.
+   ============================================================ */
+
+/* ---------- Bingkai pratinjau pada ponsel ---------- */
+.ekspor-bingkai {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+/* Buku agenda berkolom delapan sehingga butuh bidang lebar, lembar
+   disposisi tegak sehingga cukup bidang sempit. */
+.ekspor-bingkai.is-agenda > * { min-width: 700px; }
+.ekspor-bingkai.is-disposisi > * { min-width: 340px; }
+.ekspor-bingkai::-webkit-scrollbar { height: 6px; }
+.ekspor-bingkai::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 3px; }
+
+/* ---------- Keterangan gulir ---------- */
+.ekspor-gulir {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+  font-size: 11.5px;
+  color: var(--muted);
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ---------- Kisi tombol ekspor ---------- */
+.ekspor-tombol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 14px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.ekspor-tombol .btn {
+  width: 100%;
+  min-width: 0;
+  padding: 0 10px;
+  font-size: 12.5px;
+}
+
+/* ---------- Pilihan jenis lembar ---------- */
+.ekspor-pilih {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.ekspor-pilih-butir,
+.ekspor-opsi {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 10px 10px;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+}
+.ekspor-pilih-butir.is-aktif,
+.ekspor-opsi.is-on { border-color: var(--accent); background: var(--accent-soft); }
+.ekspor-pilih-butir b,
+.ekspor-opsi b { font-size: 12.5px; font-weight: 550; overflow-wrap: anywhere; }
+.ekspor-pilih-butir span,
+.ekspor-opsi span { font-size: 11px; color: var(--muted); overflow-wrap: anywhere; }
+
+/* ---------- Daftar surat untuk dipilih ---------- */
+.ekspor-daftar { display: grid; gap: 8px; margin-top: 12px; }
+.ekspor-daftar-butir {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 10px 12px;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+}
+.ekspor-daftar-butir.is-aktif { border-color: var(--accent); background: var(--accent-soft); }
+.ekspor-daftar-butir b { font-size: 12.5px; font-weight: 550; overflow-wrap: anywhere; }
+.ekspor-daftar-butir span { font-size: 11px; color: var(--muted); }
+
+/* ---------- Berkas terlampir ---------- */
+.lembar-lampiran { display: grid; gap: 6px; margin-top: 12px; }
+.lembar-lampiran-butir {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 9px;
+  align-items: start;
+  padding: 9px 11px;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: 11px;
+  font-size: 12px;
+}
+.lembar-lampiran-butir i { font-size: 16px; color: var(--accent); }
+
+/* ---------- Gaya lembar resmi, sama dengan desktop ---------- */
+
+/* Kertas Lembar Disposisi Form Resmi */
+.lembar-disposisi-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lembar-disposisi-card {
+  background: #FCFDFE;
+  border: 2px solid var(--ink);
+  padding: 24px 28px;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  box-shadow: 0 2px 8px rgba(6, 27, 49, 0.05);
+}
+
+.disp-val {
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.disp-val.font-bold { font-weight: 700; }
+
+.disp-val.font-medium { font-weight: 500; }
+
+.disp-val.font-normal { font-weight: 400; }
+
+/* Sifat Surat Pills (SR / R / B) */
+.disp-sifat-pills {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* Input Inline Mirip Garis Tulisan Fisik */
+.disp-input-inline {
+  border: 0;
+  border-bottom: 1px dashed var(--muted);
+  background: transparent;
+  padding: 3px 6px;
+  font-family: inherit;
+  font-size: 12.5px;
+  color: var(--ink);
+  width: 100%;
+  outline: none;
+}
+
+.disp-input-inline:focus {
+  border-bottom: 1.5px solid var(--accent);
+  background: rgba(99, 91, 255, 0.04);
+}
+
+.disp-input-line {
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  background: transparent;
+  padding: 2px 4px;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--ink);
+  flex: 1;
+  outline: none;
+}
+
+.disp-input-line:focus {
+  border-bottom-color: var(--accent);
+}
+
+.disp-instruction-area {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.disp-sublabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.disp-textarea {
+  width: 100%;
+  border: 1px solid var(--hairline);
+  background: #FAFCFE;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  border-radius: var(--r-xs);
+  resize: vertical;
+  line-height: 1.5;
+  outline: none;
+}
+
+.disp-textarea:focus {
+  border-color: var(--accent);
+  background: #FFFFFF;
+}
+
+/* Paraf Pimpinan Beraksen Tinta Biru Otentik */
+.disp-paraf-box {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--hairline);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.disp-paraf-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.disp-paraf-meta .caption { font-size: 11.5px; }
+
+.disp-paraf-stamp {
+  border: 1.5px dashed #2E4B7A;
+  background: rgba(46, 75, 122, 0.03);
+  border-radius: var(--r-xs);
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 64px;
+}
+
+.disp-paraf-stamp.signed {
+  border: 2px solid #0044CC;
+  background: rgba(0, 68, 204, 0.04);
+}
+
+/* Checklist 10 Item Diteruskan Kepada */
+.disp-checklist-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.disp-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 3px 4px;
+  border-radius: var(--r-xs);
+  transition: background-color 120ms ease-out;
+}
+
+.disp-check-item:hover {
+  background: rgba(6, 27, 49, 0.04);
+}
+
+.disp-check-item input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: #0044CC;
+  margin-top: 1px;
+  cursor: pointer;
+}
+
+.disp-check-label {
+  flex: 1;
+}
+
+.disp-return-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+}
+
+.disp-return-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.disp-return-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+/* ============================================================
+   SIMULASI PARAF INTERAKTIF, SIGNATURE CANVAS & TTE BARCODE
+   Integrasi dengan Single Dossier Vault Kredensial ASN
+   ============================================================ */
+
+/* Selector Mode Paraf (Coret Langsung / Vault / TTE Barcode) */
+.disp-paraf-modes {
+  display: flex;
+  gap: 4px;
+  background: #EBF1F8;
+  padding: 3px;
+  border-radius: var(--r-sm);
+  margin-bottom: 10px;
+}
+
+.disp-paraf-mode-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 5px 8px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--body);
+  border-radius: var(--r-xs);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 140ms ease-out;
+}
+
+.disp-paraf-mode-btn.is-active {
+  background: var(--surface);
+  color: #0044CC;
+  box-shadow: 0 1px 3px rgba(6, 27, 49, 0.08);
+  font-weight: 600;
+}
+
+/* 1. Mode Canvas Pad Coretan Langsung */
+.disp-canvas-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.disp-canvas-box {
+  position: relative;
+  background: #FFFFFF;
+  border: 1.5px dashed #0044CC;
+  border-radius: var(--r-xs);
+  overflow: hidden;
+  height: 94px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.disp-canvas-hint {
+  position: absolute;
+  pointer-events: none;
+  font-size: 11px;
+  color: #8C9BAE;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.disp-canvas-box.has-drawing .disp-canvas-hint {
+  display: none;
+}
+
+.disp-canvas-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+/* 2. Mode Vault Specimen Tersimpan */
+.disp-vault-panel {
+  border: 1px solid var(--hairline);
+  background: #F8FAFD;
+  border-radius: var(--r-xs);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 3. Mode TTE Barcode / QR Code BSrE */
+.disp-tte-panel {
+  background: #FFFFFF;
+  border: 1.5px solid #0044CC;
+  border-radius: var(--r-xs);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Hasil Tampilan di Atas Kertas Formulir Disposisi */
+.disp-paper-signature-rendered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  min-height: 72px;
+}
+
+.disp-paper-signature-rendered img {
+  max-height: 64px;
+  max-width: 180px;
+  object-fit: contain;
+  filter: contrast(1.15);
+}
+
+/* ============================================================
+   FORMAT BUKU AGENDA REGISTER RESMI & EKSPOR (8 KOLOM)
+   Berdasarkan Ledger Fisik Paperline Kecamatan Tamalate
+   ============================================================ */
+
+.buku-agenda-view-panel {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.buku-agenda-container {
+  width: 100%;
+}
+
+.buku-agenda-table-wrap {
+  overflow-x: auto;
+  max-height: 620px;
+}
+
+.buku-agenda-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: #FCFDFE;
+}
+
+.buku-agenda-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #F1F5F9;
+  color: var(--heading);
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  padding: 12px 14px;
+  border-bottom: 2px solid #CBD5E1;
+  border-right: 1px solid #E2E8F0;
+  text-align: left;
+  white-space: normal;
+}
+
+.buku-agenda-table thead th.col-head-no {
+  text-align: center;
+}
+
+.buku-agenda-table tbody tr {
+  border-bottom: 1px solid #E2E8F0;
+  transition: background-color 140ms ease-out;
+  cursor: pointer;
+}
+
+.buku-agenda-table tbody tr:hover {
+  background-color: #F8FAFC;
+}
+
+.buku-agenda-table tbody tr.is-sel {
+  background-color: #EDF4FF;
+  border-left: 3px solid var(--accent);
+}
+
+.buku-agenda-table td {
+  padding: 12px 14px;
+  border-right: 1px solid #E8EEF5;
+  color: var(--body);
+  vertical-align: middle;
+}
+
+.buku-agenda-table td:last-child {
+  border-right: 0;
+}
+
+.buku-agenda-table .col-buku-no {
+  text-align: center;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.buku-agenda-table .col-buku-instansi {
+  color: var(--heading);
+}
+
+.buku-agenda-table .col-buku-nosurat {
+  font-size: 12px;
+  color: var(--ink-secondary);
+}
+
+.buku-agenda-table .col-buku-tgl,
+.buku-agenda-table .col-buku-tgl-agenda {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.buku-agenda-table .col-buku-perihal {
+  font-weight: 425;
+  line-height: 1.45;
+}
+
+.buku-agenda-table .col-buku-pj {
+  color: var(--accent-deep);
+}
+
+.buku-agenda-table .col-buku-ket {
+  text-align: center;
+}
+
+.buku-ket-stamp {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid #CBD5E1;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  font-weight: 600;
+  background: #FFFFFF;
+  color: var(--heading);
+}
+
+/* ============================================================
+   KOP & LEMBAR CETAK BUKU AGENDA RESMI (EXPORT PREVIEW)
+   ============================================================ */
+
+.buku-agenda-print-sheet {
+  background: #FFFFFF;
+  padding: 28px 32px;
+  color: #0F172A;
+  font-family: 'Inter', -apple-system, sans-serif;
+  line-height: 1.4;
+}
+
+.buku-kop-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.buku-kop-logo {
+  font-size: 40px;
+  color: #061B31;
+  line-height: 1;
+}
+
+.buku-kop-text {
+  text-align: center;
+  flex: 1;
+}
+
+.kop-instansi-atas {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #334155;
+}
+
+.kop-instansi-utama {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #061B31;
+  margin: 2px 0;
+}
+
+.kop-alamat {
+  font-size: 11.5px;
+  color: #64748B;
+}
+
+.buku-kop-divider {
+  border-bottom: 2px solid #061B31;
+  border-top: 1px solid #061B31;
+  height: 3px;
+  margin: 10px 0 16px 0;
+}
+
+.buku-doc-title {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.buku-doc-title h2 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.buku-doc-subtitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  margin-top: 2px;
+}
+
+.buku-export-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+  margin-bottom: 24px;
+}
+
+.buku-export-table th,
+.buku-export-table td {
+  border: 1px solid #0F172A;
+  padding: 6px 8px;
+  vertical-align: middle;
+}
+
+.buku-export-table thead th {
+  background: #F1F5F9;
+  text-align: center;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.buku-signature-block {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 28px;
+  padding: 0 40px;
+}
+
+.buku-sig-col {
+  text-align: center;
+  font-size: 12px;
+}
+
+.buku-sig-role {
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.buku-sig-space {
+  height: 60px;
+}
+
+.buku-sig-name {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.buku-sig-nip {
+  font-size: 11px;
+  color: #475569;
+  margin-top: 2px;
+}
+
+/* ============================================================
+   KOMPONEN VERIFIKASI SEKCAM & QUICK TEMPLATES DISPOSISI
+   ============================================================ */
+
+.disp-sekcam-box.validated {
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: var(--r-xs);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.disp-sekcam-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #1D4ED8;
+  letter-spacing: 0.04em;
+}
+
+.disp-sekcam-meta {
+  font-size: 12px;
+  color: #1E3A8A;
+  margin-top: 2px;
+}
+
+.disp-sekcam-note {
+  font-size: 12px;
+  font-style: italic;
+  color: #1E293B;
+  background: #DBEAFE;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.disp-sekcam-action-card {
+  background: #FEF9C3;
+  border: 1px solid #FDE047;
+  border-radius: var(--r-xs);
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.disp-sekcam-card-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: #854D0E;
+}
+
+.disp-sekcam-box.skipped {
+  background: #F8FAFC;
+  border: 1px dashed #CBD5E1;
+  border-radius: var(--r-xs);
+  padding: 8px 10px;
+  margin-bottom: 12px;
+}
+
+.disp-quick-templates {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.disp-quick-btn {
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.disp-quick-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+/* ============================================================
+   PRINT UTILITIES & PURE ISOLATION CETAK (LEMBAR DISPOSISI & AGENDA)
+   ============================================================ */
+
+/* Secara default di layar, kontainer cetak dan elemen teks cetak disembunyikan */
+.disp-print-only,
+#purePrintContainer,
+.pure-print-container {
+  display: none !important;
+}
+
+/* ---------- Aturan cetak ----------
+   Saat tombol cetak ditekan, badan halaman diberi kelas print-mode-cetak,
+   lalu semua elemen disembunyikan kecuali wadah lembar cetak. Tukang cetak
+   peramban menawarkan simpan sebagai PDF, jadi berkas PDF dihasilkan tanpa
+   pustaka tambahan dan tanpa server. */
+
+@media print {
+  html, body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body.print-mode-cetak > :not(#lembarCetak) {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  body.print-mode-cetak #lembarCetak {
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #FFFFFF !important;
+  }
+  body.print-mode-cetak #lembarCetak * { visibility: visible !important; }
+  #lembarCetak .ekspor-tombol,
+  #lembarCetak .ekspor-pilih,
+  #lembarCetak .ekspor-daftar,
+  #lembarCetak .ekspor-gulir,
+  #lembarCetak .ekspor-sembunyi,
+  #lembarCetak .disp-screen-only,
+  #lembarCetak .disp-editor-only,
+  #lembarCetak .disp-quick-templates,
+  #lembarCetak .disp-paraf-modes,
+  #lembarCetak .disp-mode-content,
+  #lembarCetak .badge,
+  #lembarCetak button,
+  #lembarCetak canvas,
+  #lembarCetak .disp-canvas-hint {
+    display: none !important;
+  }
+  #lembarCetak .ekspor-bingkai {
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    background: #FFFFFF !important;
+  }
+  #lembarCetak .ekspor-bingkai.is-agenda > *,
+  #lembarCetak .ekspor-bingkai.is-disposisi > * { min-width: 0 !important; }
+  #lembarCetak .lembar-disposisi-wrapper { display: block !important; gap: 0 !important; }
+  @page { size: A4 landscape; margin: 10mm; }
+}

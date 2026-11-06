@@ -1,0 +1,417 @@
+/* ============================================================
+   MEJA KERJA BERBENTUK KISI IKON
+   Kisi ubin, tabel modul, halaman usulan kepegawaian, naskah SOP,
+   log surat, dan jejak audit menyeluruh.
+   ============================================================ */
+
+/* ---------- Kisi ikon ---------- */
+
+.kisi-grup { margin-top: 18px; }
+.kisi-grup:first-of-type { margin-top: 14px; }
+.kisi-grup-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+.kisi-grup-head i[class^="ph-"] { font-size: 16px; color: var(--accent); }
+.kisi-grup-head span {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.kisi {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.kisi-butir {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 7px;
+  min-width: 0;
+  padding: 13px 9px 12px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 15px;
+  font-family: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 150ms ease-out, border-color 150ms ease-out;
+}
+.kisi-butir:active { transform: scale(0.97); border-color: var(--accent); }
+
+.kisi-ikon {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.kisi-ikon i[class^="ph-"] { font-size: 21px; }
+
+.kisi-judul {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--heading);
+  overflow-wrap: anywhere;
+}
+.kisi-catatan {
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.kisi-rancangan {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  color: var(--warning);
+}
+
+/* Ubin berbentuk baris untuk daftar SOP */
+.kisi-butir-baris {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  justify-items: start;
+  align-items: center;
+  text-align: left;
+  gap: 12px;
+  padding: 12px 14px;
+}
+.kisi-butir-baris .kisi-judul { font-size: 13px; }
+.kisi-butir-baris > span:nth-child(2) { min-width: 0; display: grid; gap: 2px; }
+.kisi-panah { font-size: 15px; color: var(--muted); }
+
+/* ---------- Tabel modul ---------- */
+
+.tabel {
+  margin-top: 16px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 15px;
+  overflow: hidden;
+}
+.tabel-kepala,
+.tabel-baris {
+  display: grid;
+  grid-template-columns: repeat(var(--kolom, 3), minmax(0, 1fr));
+  gap: 8px;
+  padding: 11px 14px;
+  align-items: start;
+  border-bottom: 1px solid var(--hairline);
+}
+.tabel-baris:last-of-type { border-bottom: 0; }
+.tabel-kepala {
+  background: var(--surface-soft);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tabel-sel {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--body-secondary);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.tabel-utama { color: var(--heading); font-weight: 500; }
+.tabel-kaki {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 7px;
+  padding: 11px 14px;
+  background: var(--surface-soft);
+  border-top: 1px solid var(--hairline);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.tabel-kaki i[class^="ph-"] { font-size: 14px; margin-top: 1px; }
+
+/* ---------- Ringkasan angka ---------- */
+
+.kisi-metrik {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+.kisi-metrik-butir {
+  display: grid;
+  gap: 2px;
+  padding: 11px 13px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 15px;
+}
+.kisi-metrik-butir b { font-size: 18px; font-weight: 500; color: var(--heading); }
+.kisi-metrik-butir span { font-size: 11px; line-height: 1.35; color: var(--muted); overflow-wrap: anywhere; }
+
+/* ---------- Halaman usulan kepegawaian ---------- */
+
+.usul-ringkas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.usul-tahap {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 11px 13px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 15px;
+}
+.usul-tahap b { font-size: 18px; font-weight: 500; color: var(--heading); }
+.usul-tahap span { font-size: 11px; line-height: 1.35; color: var(--muted); overflow-wrap: anywhere; }
+.usul-deret { display: grid; gap: 10px; margin-top: 16px; }
+
+.usul-kartu {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  padding: 15px;
+  display: grid;
+  gap: 8px;
+}
+.usul-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+.usul-id { font-size: 12px; font-weight: 500; color: var(--accent); }
+.usul-head > .badge { justify-self: end; }
+.usul-nama { font-size: 14px; font-weight: 500; line-height: 1.35; color: var(--heading); overflow-wrap: anywhere; }
+.usul-nip { font-size: 11px; line-height: 1.45; color: var(--muted); overflow-wrap: anywhere; }
+
+.usul-banding {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 3px;
+}
+.usul-banding-butir { display: grid; gap: 2px; min-width: 0; }
+.usul-banding-butir span { font-size: 10px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--muted); overflow-wrap: anywhere; }
+.usul-banding-butir b { font-size: 12px; font-weight: 500; color: var(--heading); overflow-wrap: anywhere; }
+
+.usul-langkah-deret { display: grid; gap: 0; margin-top: 4px; }
+.usul-langkah {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.usul-langkah:last-child { border-bottom: 0; }
+.usul-titik {
+  width: 11px;
+  height: 11px;
+  border-radius: var(--r-pill);
+  background: var(--hairline);
+  flex: none;
+}
+.usul-langkah span:last-child { font-size: 12px; line-height: 1.4; color: var(--muted); overflow-wrap: anywhere; }
+.usul-langkah.is-done .usul-titik { background: var(--success); }
+.usul-langkah.is-done span:last-child { color: var(--body-secondary); }
+.usul-langkah.is-now .usul-titik { background: var(--warning); box-shadow: 0 0 0 4px var(--warning-soft); }
+.usul-langkah.is-now span:last-child { color: var(--heading); font-weight: 500; }
+
+.usul-riwayat {
+  display: grid;
+  gap: 6px;
+  padding: 10px 12px;
+  background: var(--surface-soft);
+  border-radius: var(--r-sm);
+}
+.usul-riwayat-baris {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 7px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.usul-riwayat-baris i[class^="ph-"] { font-size: 13px; margin-top: 1px; }
+.usul-riwayat-baris b { color: var(--body-secondary); font-weight: 500; }
+
+.usul-aksi { margin-top: 2px; }
+.usul-aksi .btn { width: 100%; }
+.usul-selesai,
+.usul-tunggu {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 2px;
+  padding: 9px 12px;
+  border-radius: var(--r-sm);
+  font-size: 11.5px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.usul-selesai { background: var(--success-soft); color: var(--success); }
+.usul-tunggu { background: var(--surface-soft); color: var(--muted); }
+
+/* ---------- Naskah SOP ---------- */
+
+.sop-deret {
+  display: grid;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 15px;
+  padding: 4px 14px;
+}
+.sop-langkah {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 11px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.sop-langkah:last-child { border-bottom: 0; }
+.sop-nomor {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  font-size: 11.5px;
+  font-weight: 500;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.sop-teks { font-size: 13px; line-height: 1.5; color: var(--body); overflow-wrap: anywhere; }
+
+/* ---------- Log surat ---------- */
+
+.log-keterangan {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-bottom: 9px;
+  overflow-wrap: anywhere;
+}
+
+.log { display: grid; gap: 8px; }
+.log-baris {
+  display: grid;
+  gap: 5px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 15px;
+  padding: 13px 15px;
+}
+.log-atas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+.log-agenda { font-size: 12.5px; font-weight: 500; color: var(--accent); }
+.log-atas > .badge { justify-self: end; }
+.log-perihal { font-size: 13.5px; font-weight: 500; line-height: 1.4; color: var(--heading); overflow-wrap: anywhere; }
+.log-meta { font-size: 11px; line-height: 1.45; color: var(--muted); overflow-wrap: anywhere; }
+
+.log-instruksi {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 7px;
+  padding: 8px 11px;
+  background: var(--surface-soft);
+  border-radius: var(--r-sm);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--body-secondary);
+  overflow-wrap: anywhere;
+}
+.log-instruksi i[class^="ph-"] { font-size: 14px; margin-top: 1px; color: var(--accent); }
+.log-instruksi.kosong { color: var(--muted); }
+.log-instruksi.kosong i[class^="ph-"] { color: var(--muted); }
+
+.log-kaki { font-size: 11.5px; line-height: 1.5; color: var(--muted); overflow-wrap: anywhere; }
+.log-kaki b { color: var(--body-secondary); font-weight: 500; }
+
+.log-ttd {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  padding: 5px 10px;
+  border-radius: var(--r-pill);
+  background: var(--surface-soft);
+  font-size: 11px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.log-ttd.ada { background: var(--success-soft); color: var(--success); }
+
+/* ---------- Jejak audit menyeluruh ---------- */
+
+.audit-global { display: grid; gap: 8px; margin-top: 14px; }
+.audit-global-butir {
+  display: grid;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 15px;
+  padding: 12px 15px;
+}
+.audit-atas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 10px;
+}
+.audit-waktu { font-size: 10.5px; color: var(--muted); }
+.audit-tindakan { font-size: 13px; font-weight: 500; line-height: 1.4; color: var(--heading); overflow-wrap: anywhere; }
+.audit-oleh { font-size: 11.5px; line-height: 1.45; color: var(--body-secondary); overflow-wrap: anywhere; }
+.audit-catatan {
+  padding: 7px 10px;
+  background: var(--surface-soft);
+  border-radius: var(--r-xs);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.audit-perihal { font-size: 11px; line-height: 1.4; color: var(--muted); overflow-wrap: anywhere; }
+
+@media (min-width: 420px) {
+  .kisi { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kisi-butir { transition: none; }
+}
+
+/* ---------- Keadaan kosong ---------- */
+.sr-kosong {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 34px 20px;
+  margin-top: 12px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed var(--hairline);
+  border-radius: 16px;
+}
+.sr-kosong i { font-size: 30px; color: var(--muted); }
+.sr-kosong span { max-width: 34ch; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+
+/* ---------- Tautan pemeriksaan pada naskah SOP ---------- */
+.sop-tautan .sr-kutip { margin-bottom: 12px; }
